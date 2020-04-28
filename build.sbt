@@ -40,7 +40,7 @@ lazy val root = Project("spark-redshift", file("."))
   .settings(
     name := "spark-redshift",
     organization := "io.github.spark-redshift-community",
-    scalaVersion := "2.11.12",
+    scalaVersion := "2.12.10",
     sparkVersion := "2.4.3",
     testSparkVersion := sys.props.get("spark.testVersion").getOrElse(sparkVersion.value),
 
@@ -101,13 +101,8 @@ lazy val root = Project("spark-redshift", file("."))
      * Release settings *
      ********************/
 
-    publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value)
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-    },
+    publishTo := Some("Sonatype Snapshots Nexus" at "https://nexus3.tescloud.com/repository/maven-snapshots"),
+    credentials += Credentials(Path.userHome / ".sbt" / ".credentials"),
 
     publishMavenStyle := true,
     releaseCrossBuild := true,
@@ -142,8 +137,6 @@ lazy val root = Project("spark-redshift", file("."))
         <url>https://github.com/lucagiovagnoli</url>
       </developer>
     </developers>,
-
-    bintrayReleaseOnPublish in ThisBuild := false,
 
     // Add publishing to spark packages as another step.
     releaseProcess := Seq[ReleaseStep](
